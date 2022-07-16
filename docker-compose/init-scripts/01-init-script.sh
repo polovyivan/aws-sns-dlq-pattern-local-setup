@@ -16,12 +16,6 @@ export SNS_TOPIC=tutorial-topic
 echo "########### Creating Subscriber for Tutorial Topic  ###########"
 aws --endpoint-url=http://localstack:4566 sqs create-queue --queue-name $SQS_SUBSCRIBER
 
-echo "########### ARN for Subscriber SQS ###########"
-SQS_SUBSCRIBER_ARN=$(aws --endpoint-url=http://localstack:4566 sqs get-queue-attributes\
-                  --attribute-name QueueArn --queue-url=http://localhost:4566/000000000000/"$SQS_SUBSCRIBER"\
-                  |  sed 's/"QueueArn"/\n"QueueArn"/g' | grep '"QueueArn"' | awk -F '"QueueArn":' '{print $2}' | tr -d '"' | xargs)
-
-
 echo "########### Creating DLQ SQS  ###########"
 aws --endpoint-url=http://localstack:4566 sqs create-queue --queue-name $SQS_DLQ
 
